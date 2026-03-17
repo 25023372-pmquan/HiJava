@@ -22,39 +22,11 @@ public class ArtistApp {
         CardLayout cardLayout = new CardLayout();
         JPanel textFieldPanel = new JPanel(cardLayout);
 
-        JTextField circleXfield = new JTextField();
-        circleXfield.setMaximumSize(new Dimension(400,20));
-        JTextField circleYfield = new JTextField();
-        circleYfield.setMaximumSize(new Dimension(400,20));
-        JTextField radiusField = new JTextField();
-        radiusField.setMaximumSize(new Dimension(400,20));
-        JPanel circlePanel = new JPanel();
-        circlePanel.setLayout(new BoxLayout(circlePanel, BoxLayout.Y_AXIS));
-        circlePanel.add(new JLabel("x:"));
-        circlePanel.add(circleXfield);
-        circlePanel.add(new JLabel("y:"));
-        circlePanel.add(circleYfield);
-        circlePanel.add(new JLabel("Radius:"));
-        circlePanel.add(radiusField);
 
-        JTextField rectangleXfield = new JTextField();
-        rectangleXfield.setMaximumSize(new Dimension(400,20));
-        JTextField rectangleYfield = new JTextField();
-        rectangleYfield.setMaximumSize(new Dimension(400,20));
-        JTextField widthField = new JTextField();
-        widthField.setMaximumSize(new Dimension(400,20));
-        JTextField heightField = new JTextField();
-        heightField.setMaximumSize(new Dimension(400,20));
-        JPanel rectanglePanel = new JPanel();
-        rectanglePanel.setLayout(new BoxLayout(rectanglePanel, BoxLayout.Y_AXIS));
-        rectanglePanel.add(new JLabel("x:"));
-        rectanglePanel.add(rectangleXfield);
-        rectanglePanel.add(new JLabel("y:"));
-        rectanglePanel.add(rectangleYfield);
-        rectanglePanel.add(new JLabel("Width: "));
-        rectanglePanel.add(widthField);
-        rectanglePanel.add(new JLabel("Height: "));
-        rectanglePanel.add(heightField);
+        CircleConfig circleConfig = new CircleConfig();
+        JPanel circlePanel = circleConfig.createConfig();
+        RectangleConfig rectangleConfig = new RectangleConfig();
+        JPanel rectanglePanel = rectangleConfig.createConfig();
 
         textFieldPanel.add(circlePanel,"circle");
         textFieldPanel.add(rectanglePanel,"rectangle");
@@ -93,10 +65,8 @@ public class ArtistApp {
                 leftPanel.add(resultLabel);
                 if(currentShapeType == ShapeType.CIRCLE){
                     try {
-                        int x = Integer.parseInt(circleXfield.getText());
-                        int y = Integer.parseInt(circleYfield.getText());
-                        int radius = Integer.parseInt(radiusField.getText());
-                        shapes.add(new Circle(x, y ,radius));
+                            Shape circle = circleConfig.getShape();
+                            shapes.add(circle);
                     }catch (NumberFormatException exception){
                         resultLabel.setText("only number, please!");
                         leftPanel.add(resultLabel);
@@ -104,11 +74,8 @@ public class ArtistApp {
 
                 } else if (currentShapeType == ShapeType.RECTANGLE) {
                     try {
-                        int x = Integer.parseInt(rectangleXfield.getText());
-                        int y = Integer.parseInt(rectangleYfield.getText());
-                        int width = Integer.parseInt(widthField.getText());
-                        int height = Integer.parseInt((heightField.getText()));
-                        shapes.add(new Rectangle(x, y, width, height));
+                        Shape rectangle = rectangleConfig.getShape();
+                        shapes.add(rectangle);
                     }catch (NumberFormatException exception){
                         resultLabel.setText("only number, please!");
                         leftPanel.add(resultLabel);
