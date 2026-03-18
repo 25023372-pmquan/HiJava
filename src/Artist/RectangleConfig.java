@@ -6,28 +6,27 @@ import java.awt.*;
 public class RectangleConfig extends ShapeConfig {
     private JTextField widthField;
     private JTextField heightField;
-    JPanel createConfig(){
 
-        JPanel rectanglePanel = new JPanel();
-        rectanglePanel.setLayout(new BoxLayout(rectanglePanel, BoxLayout.Y_AXIS));
-        rectanglePanel.add(super.createConfig());
+    RectangleConfig(){
+        drawInitPoint();
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         widthField = new JTextField();
         widthField.setMaximumSize(new Dimension(400,20));
         heightField = new JTextField();
         heightField.setMaximumSize(new Dimension(400,20));
 
-        rectanglePanel.add(new JLabel("Width: "));
-        rectanglePanel.add(widthField);
-        rectanglePanel.add(new JLabel("Height: "));
-        rectanglePanel.add(heightField);
-        return rectanglePanel;
+        add(new JLabel("Width: "));
+        add(widthField);
+        add(new JLabel("Height: "));
+        add(heightField);
     }
+
+
     Shape getShape(){
-        int x = Integer.parseInt(xField.getText());
-        int y = Integer.parseInt(yField.getText());
+        Point point = getPoint();
         int w = Integer.parseInt(widthField.getText());
         int h = Integer.parseInt(heightField.getText());
-        return (new Rectangle(x, y , w, h));
+        return (new Rectangle(point.getX(), point.getY() , w, h));
     }
 
 }

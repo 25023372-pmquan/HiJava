@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ArtistApp {
     static ShapeType currentShapeType;
@@ -21,20 +22,23 @@ public class ArtistApp {
 
         CardLayout cardLayout = new CardLayout();
         JPanel textFieldPanel = new JPanel(cardLayout);
+        HashMap<ShapeType,ShapeConfig> hm = new HashMap<>();
+
+        for (ShapeType shapeType:ShapeType.values()){
+            ShapeConfig shapeConfig = ShapeConfig.from(shapeType);
+
+            hm.put(shapeType,shapeConfig);
+
+            textFieldPanel.add(shapeConfig, shapeType.getShapeName());
+        }
 
 
-        CircleConfig circleConfig = new CircleConfig();
-        JPanel circlePanel = circleConfig.createConfig();
-        RectangleConfig rectangleConfig = new RectangleConfig();
-        JPanel rectanglePanel = rectangleConfig.createConfig();
-
-        textFieldPanel.add(circlePanel,"circle");
-        textFieldPanel.add(rectanglePanel,"rectangle");
 
         ButtonGroup buttonGroup = new ButtonGroup();
         ShapeType[] shapeTypes = ShapeType.values();
         for(ShapeType shapeType : shapeTypes){
             JRadioButton radioButton = new JRadioButton(shapeType.getShapeName());
+
 
             radioButton.addActionListener(new ActionListener() {
                 @Override
@@ -54,7 +58,6 @@ public class ArtistApp {
         JButton drawButton = new JButton("Draw");
         leftPanel.add(drawButton);
 
-
         ArrayList<Shape> shapes = new ArrayList<>();
         Display display = new Display(shapes);
         rightPanel.add(display);
@@ -63,35 +66,20 @@ public class ArtistApp {
             public void actionPerformed(ActionEvent e) {
                 resultLabel.setText("");
                 leftPanel.add(resultLabel);
-                if(currentShapeType == ShapeType.CIRCLE){
-                    try {
-                            Shape circle = circleConfig.getShape();
-                            shapes.add(circle);
-                    }catch (NumberFormatException exception){
-                        resultLabel.setText("only number, please!");
-                        leftPanel.add(resultLabel);
-                    }
 
-                } else if (currentShapeType == ShapeType.RECTANGLE) {
-                    try {
-                        Shape rectangle = rectangleConfig.getShape();
-                        shapes.add(rectangle);
-                    }catch (NumberFormatException exception){
-                        resultLabel.setText("only number, please!");
-                        leftPanel.add(resultLabel);
-                    }
-                }
+                ShapeConfig shapeConfig = hm.get(currentShapeType);
+                Shape newShape = shapeConfig.getShape();
+                shapes.add(newShape);
+
                 display.repaint();
             }
         };
         drawButton.addActionListener(listener);
-
         frame.setSize(600,400);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainPanel.add(leftPanel);
         mainPanel.add((rightPanel));
         frame.add(mainPanel);
         frame.setVisible(true);
-
     }
 }

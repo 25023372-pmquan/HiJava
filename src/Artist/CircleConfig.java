@@ -5,21 +5,21 @@ import java.awt.*;
 
 public class CircleConfig extends ShapeConfig {
     private JTextField radiusField;
-    JPanel createConfig(){
-        JPanel circlePanel = new JPanel();
-        circlePanel.setLayout(new BoxLayout(circlePanel, BoxLayout.Y_AXIS));
-        circlePanel.add(super.createConfig());
+
+    CircleConfig(){
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        drawInitPoint();
         radiusField = new JTextField();
         radiusField.setMaximumSize(new Dimension(400,20));
-        circlePanel.add(new JLabel("Radius:"));
-        circlePanel.add(radiusField);
-        return circlePanel;
+        add(new JLabel("Radius:"));
+        add(radiusField);
     }
+
+
     @Override
     Shape getShape(){
-        int x = Integer.parseInt(xField.getText());
-        int y = Integer.parseInt(yField.getText());
+        Point point = getPoint();
         int r = Integer.parseInt(radiusField.getText());
-        return (new Circle(x,y,r));
+        return (new Circle(point.getX(),point.getY(),r));
     }
 }
